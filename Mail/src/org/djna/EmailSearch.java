@@ -30,6 +30,18 @@ public class EmailSearch {
         String regex = "none";
         String contents = Files.readString(filePath);
 
+        Matcher m = Pattern.compile("[a-zA-Z0-9]+[@][a-z]+\\.[a-z]{3}").matcher(contents);
+
+        while (m.find()){
+            String domain = m.group();
+            if (domain.equals("@softwire.com")) {
+                counter = counter + 1;
+                System.out.println(m.group());
+            }
+        }
+
+
+
         System.out.printf("Found %s %d times", regex, counter);
 
     }
