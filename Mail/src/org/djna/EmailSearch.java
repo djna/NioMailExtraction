@@ -30,16 +30,31 @@ public class EmailSearch {
         String regex = "none";
         String contents = Files.readString(filePath);
 
-        Matcher m = Pattern.compile("[a-zA-Z0-9]+[@][a-z]+\\.[a-z]{3}").matcher(contents);
-
+        Matcher m = Pattern.compile("([a-zA-Z0-9]+)[@]([a-z]+\\.[a-z]{3})").matcher(contents);
+/*
         while (m.find()){
-            String domain = m.group();
-            if (domain.equals("@softwire.com")) {
+            String softwireDomain = m.group();
+            if (softwireDomain.endsWith("softwire.com")){
                 counter = counter + 1;
-                System.out.println(m.group());
+                //System.out.println(m.group());
             }
         }
+*/
+        Map<String, Integer> domainTypes = new HashMap<String, Integer>();
+        while (m.find()) {
+            String domain = m.group(2);
+            Integer currentCount = domainTypes.get(domain);
+            if (currentCount == null) {
+                currentCount =0 ;
+            }
+            currentCount++;
+            domainTypes.put(domain,currentCount);
+            counter++;
+        }
 
+        for (Map.Entry<String, Integer> entry : domainTypes.entrySet()) {
+            System.out.println(entry.getKey()+" : "+entry.getValue());
+        }
 
 
         System.out.printf("Found %s %d times", regex, counter);
